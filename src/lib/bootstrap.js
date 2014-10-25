@@ -4,12 +4,33 @@ require([], function() {
   }
   var datGui;
 
+  function createPeer() {
+    var peer = new Peer({key: 'klgy15uvondpwrk9'}),
+      obj = {
+        disconnect: function() {
+          peer.disconnect();
+          disconnectDatGui.remove(discon);
+        },
+        destroy: function() {
+          peer.destroy();
+          disconnectDatGui.destroy();
+        }
+      },
+      disconnectDatGui = new dat.GUI(),
+      discon = disconnectDatGui.add(obj, 'disconnect');
+
+    disconnectDatGui.add(obj, 'destroy');
+
+    return peer;
+  };
+
   // Client: join game
   var join = {
     'game id': 'Game ID',
     join: function() {
       console.log('try to join game', join['game id']);
       // TODO: connect
+      env.peer = createPeer();
     },
     init: function() {
       datGui = new dat.GUI();
@@ -22,10 +43,28 @@ require([], function() {
   var host = {
     'game id': 'Game ID',
     init: function() {
+      datGui.destroy();
 
-      console.log('host game under id', 'ZUFJFCHDEutjdhdHFzjfHdJdf');
-      // TODO: listen for connections
-      //env.peer = new Peer({key: 'klgy15uvondpwrk9'});
+      env.peer = createPeer();
+
+      env.peer.on('open', function(id) {
+        console.log('My peer ID is: ' + id);
+      });
+
+      env.peer.on('connection', function(conn) {
+        conn.on('open', function() {
+
+          console.log('connection established');
+
+          // Receive messages
+          conn.on('data', function(data) {
+            console.log('Received', data);
+          });
+
+          // Send messages
+          conn.send('Hello!');
+        });
+      });
     }
   };
 
