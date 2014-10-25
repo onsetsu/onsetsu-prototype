@@ -4,6 +4,7 @@ require([], function() {
   }
   var datGui;
 
+  // creates a new peer and sets up its disconnection gui
   function createPeer() {
     var peer = new Peer({key: 'klgy15uvondpwrk9'}),
       disconnectDatGui = new dat.GUI(),
@@ -26,9 +27,24 @@ require([], function() {
   var join = {
     'game id': 'Game ID',
     join: function() {
+      datGui.destroy();
+
       console.log('try to join game', join['game id']);
       // TODO: connect
-      env.peer = createPeer();
+      var peer = env.peer = createPeer();
+      var conn = peer.connect(join['game id']);
+      conn.on('open', function() {
+
+        console.log('connection established');
+
+        // Receive messages
+        conn.on('data', function(data) {
+          console.log('Received', data);
+        });
+
+        // Send messages
+        conn.send('Hello Host!');
+      });
     },
     init: function() {
       datGui = new dat.GUI();
@@ -39,17 +55,16 @@ require([], function() {
 
   // Host side
   var host = {
-    'game id': 'Game ID',
     init: function() {
       datGui.destroy();
 
-      env.peer = createPeer();
+      var peer = env.peer = createPeer();
 
-      env.peer.on('open', function(id) {
+      peer.on('open', function(id) {
         console.log('My peer ID is: ' + id);
       });
 
-      env.peer.on('connection', function(conn) {
+      peer.on('connection', function(conn) {
         conn.on('open', function() {
 
           console.log('connection established');
@@ -60,7 +75,7 @@ require([], function() {
           });
 
           // Send messages
-          conn.send('Hello!');
+          conn.send('Hello Client!');
         });
       });
     }
