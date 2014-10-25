@@ -1,4 +1,4 @@
-require([], function() {
+require(['./commands/initgame'], function(InitGame) {
   if(typeof env === 'undefined') {
     env = {};
   }
