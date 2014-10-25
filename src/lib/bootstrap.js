@@ -6,20 +6,18 @@ require([], function() {
 
   function createPeer() {
     var peer = new Peer({key: 'klgy15uvondpwrk9'}),
-      obj = {
-        disconnect: function() {
-          peer.disconnect();
-          disconnectDatGui.remove(discon);
-        },
-        destroy: function() {
-          peer.destroy();
-          disconnectDatGui.destroy();
-        }
-      },
       disconnectDatGui = new dat.GUI(),
-      discon = disconnectDatGui.add(obj, 'disconnect');
+      discon = disconnectDatGui.add(peer, 'disconnect');
+    disconnectDatGui.add(peer, 'destroy');
 
-    disconnectDatGui.add(obj, 'destroy');
+    peer.on('disconnected', function() {
+      console.log('peer disconnected');
+      disconnectDatGui.remove(discon);
+    });
+    peer.on('close', function() {
+      console.log('peer destroyed');
+      disconnectDatGui.destroy();
+    });
 
     return peer;
   };
