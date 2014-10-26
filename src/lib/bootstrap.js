@@ -1,8 +1,24 @@
-require(['./commands/initgame'], function(InitGame) {
+require(['./commands/command', './commands/initgame', './commands/say'], function(Command, InitGame, Say) {
   if(typeof env === 'undefined') {
     env = {};
   }
   var datGui;
+
+  window.chat = function(message) {
+    (new Say({
+      who: env.peer.id,
+      says: message
+    })).executeAndDistribute();
+  };
+
+  function prepareOpenedConnection() {
+    console.log('connection established');
+
+    // Receive messages
+    env.conn.on('data', function(data) {
+      (new (Command.commands[data.command])(data.params)).execute();
+    });
+  };
 
   // creates a new peer and sets up its disconnection gui
   function createPeer() {
@@ -30,20 +46,10 @@ require(['./commands/initgame'], function(InitGame) {
       datGui.destroy();
 
       console.log('try to join game', join['game id']);
-      // TODO: connect
       var peer = env.peer = createPeer();
-      var conn = peer.connect(join['game id']);
+      var conn = env.conn = peer.connect(join['game id']);
       conn.on('open', function() {
-
-        console.log('connection established');
-
-        // Receive messages
-        conn.on('data', function(data) {
-          console.log('Received', data);
-        });
-
-        // Send messages
-        conn.send('Hello Host!');
+        prepareOpenedConnection();
       });
     },
     init: function() {
@@ -65,17 +71,10 @@ require(['./commands/initgame'], function(InitGame) {
       });
 
       peer.on('connection', function(conn) {
+        env.conn = conn;
         conn.on('open', function() {
-
-          console.log('connection established');
-
-          // Receive messages
-          conn.on('data', function(data) {
-            console.log('Received', data);
-          });
-
-          // Send messages
-          conn.send('Hello Client!');
+          prepareOpenedConnection();
+          chat('Hi, Client');
         });
       });
     }
