@@ -1,12 +1,12 @@
 ig.module(
-	'game.entities.board'
+	'game.entities.spell'
 )
 .requires(
 	'impact.entity'
 )
 .defines(function(){
 
-EntityBoard = ig.Entity.extend({
+EntitySpell = ig.Entity.extend({
 	//size: {x:32, y:32},
 	_wmScalable: true,
 	_wmDrawBox: true,

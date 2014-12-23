@@ -2,7 +2,7 @@ ig.module(
 	'game.entities.syllable'
 )
 .requires(
-	'impact.entity'
+	'game.entities.widget'
 )
 .defines(function(){
 
@@ -154,12 +154,13 @@ var font = new ig.Font( 'media/onsetsufontblack.png' );
 font.letterSpacing -= 2;
 font.lineSpacing -= 2;
 
-EntitySyllable = ig.Entity.extend({
+EntitySyllable = EntityWidget.extend({
 	size: {x:32, y:32},
 	animSheet: new ig.AnimationSheet('media/board.png', 32, 32),
 	init: function(x, y, settings) {
 		this.parent(x, y, settings);
 		
+		this.addAnim('__usused1__', 1, [78]);
 		this.addAnim('__usused2__', 1, [79]);
 		this.addAnim('fire', 1, [80]);
 		this.addAnim('water', 1, [81]);
@@ -190,8 +191,6 @@ EntitySyllable = ig.Entity.extend({
 	},
 	update: function() {
 		this.parent();
-
-		this.vel.x = 1;
 	},
 	draw: function() {
 		this.parent();
