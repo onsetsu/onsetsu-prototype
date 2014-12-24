@@ -32,7 +32,7 @@ var _SystemGame = ig.Game.extend({
 		this.parent();
 
 		this.systems.forEach(function(system) {
-		    system.update(this);
+		    system.update();
 		}, this);
 	},
 
@@ -41,12 +41,12 @@ var _SystemGame = ig.Game.extend({
 		this.parent();
 
 		this.systems.forEach(function(system) {
-		    system.draw(this);
+		    system.draw();
 		}, this);
 	},
 
 	addSystem: function(systemClass) {
-	    var system = new (systemClass)(this);
+	    var system = new (systemClass)();
 	    this.systems.push(system);
 	}
 });

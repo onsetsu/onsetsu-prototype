@@ -15,17 +15,17 @@ function hovered(entity) {
 }
 
 SystemWidget = System.extend({
-	init: function(game) {
-	    this.parent(game);
+	init: function() {
+	    this.parent();
 	},
 
-	update: function(game) {
-		this.parent(game);
+	update: function() {
+		this.parent();
 
 		if(ig.input.pressed('leftclick')) {
 		    var clickedEntity, zIndex;
 
-		    game.entities.forEach(function(entity) {
+		    ig.game.entities.forEach(function(entity) {
                 if(hovered(entity)) {
                     if(!clickedEntity) {
                         clickedEntity = entity;

@@ -7,9 +7,9 @@ ig.module(
 .defines(function(){
 
 System = ig.Class.extend({
-	init: function(game) {},
-	update: function(game) {},
-	draw: function(game) {}
+	init: function() {},
+	update: function() {},
+	draw: function() {}
 });
 
 });
