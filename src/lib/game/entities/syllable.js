@@ -229,6 +229,10 @@ EntitySyllable = EntityWidget.extend({
 		var x = this.pos.x + this.animSheet.width / 2;
 		var y = this.pos.y + this.animSheet.height / 4 * 3;
 		font.draw(this.label, x, y, ig.Font.ALIGN.CENTER);
+
+		// draw cost
+		var x = this.pos.x + this.animSheet.width;
+		font.draw(this.cost, x, this.pos.y, ig.Font.ALIGN.RIGHT);
 	},
 	matches: function(otherSyllable) {
         return this.matchesPrimitives(otherSyllable.primitives);
@@ -250,7 +254,7 @@ EntitySyllable = EntityWidget.extend({
 });
 
 _.each(SyllableDescriptions, function(value, key) {
-    EntitySyllable['get' + key] = value;
+    EntitySyllable['get' + key] = function() { return value; };
 });
 
 });
