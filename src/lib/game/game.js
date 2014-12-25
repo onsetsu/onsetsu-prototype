@@ -5,6 +5,7 @@ ig.module(
 	'impact.game',
 	'impact.font',
 
+    // entities
 	'game.entities.battle-field',
 	'game.entities.info-text',
 	'game.entities.spell',
@@ -14,8 +15,10 @@ ig.module(
 	'game.entities.syllable-selection',
 	'game.entities.time-line',
 
+    // maps
 	'game.levels.battle',
 
+    // systems
 	'game.systems.widget',
 
 	'impact.debug.debug'
@@ -74,10 +77,16 @@ Onsetsu.Game = _SystemGame.extend({
         // Initialize Battle Field
 		this.loadLevel(LevelBattle);
 
-        ([20, 30, 40, 50, 60, 70, 80]).forEach(function(xy) {
-            var entity = this.spawnEntity(EntitySyllable, xy, xy, {});
+        ([60, 70, 80, 20, 30, 40, 50]).forEach(function(xy) {
+            var entity = this.spawnEntity(EntitySyllable, xy, xy, {
+                cost: 2,
+                label: 'Kun',
+                sheetIndex: 88,
+                primitives: ['Kun']
+            });
             entity.onclick(function() {
                 entity.vel.x += 1;
+                entity.zIndex = xy;
             });
         }, this);
 
@@ -88,6 +97,7 @@ Onsetsu.Game = _SystemGame.extend({
 		this.parent();
 
 		// Add your own, additional update code here
+	    this.sortEntitiesDeferred();
 	},
 
 	draw: function() {
