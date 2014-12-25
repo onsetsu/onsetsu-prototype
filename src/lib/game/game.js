@@ -31,20 +31,28 @@ var _SystemGame = ig.Game.extend({
 	},
 
 	update: function() {
+		this.systems.forEach(function(system) {
+		    system.beforeUpdate();
+		}, this);
+
 		// Update all entities and backgroundMaps
 		this.parent();
 
 		this.systems.forEach(function(system) {
-		    system.update();
+		    system.afterUpdate();
 		}, this);
 	},
 
 	draw: function() {
+		this.systems.forEach(function(system) {
+		    system.beforeDraw();
+		}, this);
+
 		// Draw all entities and backgroundMaps
 		this.parent();
 
 		this.systems.forEach(function(system) {
-		    system.draw();
+		    system.afterDraw();
 		}, this);
 	},
 
@@ -78,12 +86,7 @@ Onsetsu.Game = _SystemGame.extend({
 		this.loadLevel(LevelBattle);
 
         ([60, 70, 80, 20, 30, 40, 50]).forEach(function(xy) {
-            var entity = this.spawnEntity(EntitySyllable, xy, xy, {
-                cost: 2,
-                label: 'Kun',
-                sheetIndex: 88,
-                primitives: ['Kun']
-            });
+            var entity = this.spawnEntity(EntitySyllable, xy, xy, EntitySyllable.getFire());
             entity.onclick(function() {
                 entity.vel.x += 1;
                 entity.zIndex = xy;

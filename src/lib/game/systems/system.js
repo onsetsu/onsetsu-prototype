@@ -8,8 +8,10 @@ ig.module(
 
 System = ig.Class.extend({
 	init: function() {},
-	update: function() {},
-	draw: function() {}
+	beforeUpdate: function() {},
+	afterUpdate: function() {},
+	beforeDraw: function() {},
+	afterDraw: function() {}
 });
 
 });

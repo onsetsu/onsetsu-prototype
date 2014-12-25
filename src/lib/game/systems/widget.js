@@ -19,7 +19,7 @@ SystemWidget = System.extend({
 	    this.parent();
 	},
 
-	update: function() {
+	beforeUpdate: function() {
 		this.parent();
 
 		if(ig.input.pressed('leftclick')) {
