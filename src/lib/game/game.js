@@ -7,6 +7,7 @@ ig.module(
 
     // entities
 	'game.entities.battle-field',
+	'game.entities.field',
 	'game.entities.info-text',
 	'game.entities.spell',
 	'game.entities.spell-list',
@@ -92,6 +93,8 @@ Onsetsu.Game = _SystemGame.extend({
                 entity.zIndex = xy;
             });
         }, this);
+
+        this.spawnEntity(EntityField, 500, 400, { type: 'Fire' });
 
 		this.addSystem(SystemWidget);
 	},
