@@ -1,4 +1,5 @@
 Onsetsu = {};
+SyllableSize = { x: 32, y: 32 };
 
 ig.module(
 	'game.main' 
