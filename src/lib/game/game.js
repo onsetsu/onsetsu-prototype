@@ -97,11 +97,17 @@ Onsetsu.Game = _SystemGame.extend({
             mage: "TODO"
         });
         board.getField(1,5).setAnim('Fire');
-
         board.placeSyllable(2,4, EntitySyllable.getShadow());
         board.placeSyllable(2,5, EntitySyllable.getSol());
 
         this.spawnEntity(EntitySpell, 600, 10, SpellDescriptions.ChainLightning);
+
+        var list = this.spawnEntity(EntitySpellList, 10, 10);
+        list.addSpell(SpellDescriptions.Fireball);
+        list.addSpell(SpellDescriptions.ChainLightning);
+        list.addSpell(SpellDescriptions.Whirlwind);
+        list.addSpell(SpellDescriptions.FrostNova);
+        list.addSpell(SpellDescriptions.EarthWall);
 
 		this.addSystem(SystemWidget);
 	},
