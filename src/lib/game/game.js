@@ -64,11 +64,6 @@ var _SystemGame = ig.Game.extend({
 });
 
 Onsetsu.Game = _SystemGame.extend({
-
-	// Load a font
-	font: new ig.Font( 'media/04b03.font.png' ),
-
-
 	init: function() {
 	    this.parent();
 
@@ -95,6 +90,16 @@ Onsetsu.Game = _SystemGame.extend({
         }, this);
 
         this.spawnEntity(EntityField, 500, 400, { type: 'Fire' });
+        this.spawnEntity(EntitySyllable, 500, 400, EntitySyllable.getFire());
+
+        var board = this.spawnEntity(EntitySyllableBoard, 200, 100, {
+            boardSize: { x: 10, y: 10 },
+            mage: "TODO"
+        });
+        board.getField(1,5).setAnim('Fire');
+
+        board.placeSyllable(2,4, EntitySyllable.getShadow());
+        board.placeSyllable(2,5, EntitySyllable.getSol());
 
 		this.addSystem(SystemWidget);
 	},
@@ -110,7 +115,6 @@ Onsetsu.Game = _SystemGame.extend({
 		this.parent();
 
 		// Add your own drawing code here
-		this.font.draw( 'It Works!', 0, 0, ig.Font.ALIGN.LEFT );
 	}
 });
 

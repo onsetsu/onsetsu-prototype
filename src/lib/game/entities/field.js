@@ -40,6 +40,8 @@ EntityField = ig.Entity.extend({
 	},
 	applySettings: function(settings) {
         this.type = settings.type;
+        this.indexX = settings.indexX;
+        this.indexY = settings.indexY;
 
         this.setAnim(this.type);
 	},
