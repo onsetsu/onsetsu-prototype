@@ -2,208 +2,205 @@ ig.module(
 	'game.entities.syllable'
 )
 .requires(
-	'game.entities.widget'
+	'game.entities.widget',
+	'game.font'
 )
 .defines(function(){
 
 SyllableDescriptions = {
-	'__usused1__': {
+	__usused1__: {
 		cost: -1,
 		label: '__usused1__',
 		sheetIndex: 78,
 		primitives: ['__unused1__']
 	},
-	'__usused2__': {
+	__usused2__: {
 		cost: -1,
 		label: '__usused2__',
 		sheetIndex: 79,
 		primitives: ['__unused2__']
 	},
-	'Fire': {
+	Fire: {
 		cost: 2,
 		label: 'Fire',
 		sheetIndex: 80,
 		primitives: ['Fire']
 	},
-	'Water': {
+	Water: {
 		cost: 2,
 		label: 'Water',
 		sheetIndex: 81,
 		primitives: ['Water']
 	},
-	'Earth': {
+	Earth: {
 		cost: 2,
 		label: 'Earth',
 		sheetIndex: 82,
 		primitives: ['Earth']
 	},
-	'Wind': {
+	Wind: {
 		cost: 2,
 		label: 'Wind',
 		sheetIndex: 83,
 		primitives: ['Wind']
 	},
-	'Light': {
+	Light: {
 		cost: 2,
 		label: 'Light',
 		sheetIndex: 84,
 		primitives: ['Light']
 	},
-	'Shadow': {
+	Shadow: {
 		cost: 2,
 		label: 'Shadow',
 		sheetIndex: 85,
 		primitives: ['Shadow']
 	},
-	'__usused3__': {
+	__usused3__: {
 		cost: -1,
 		label: '__usused3__',
 		sheetIndex: 86,
 		primitives: ['__usused3__']
 	},
-	'__usused4__': {
+	__usused4__: {
 		cost: -1,
 		label: '__usused4__',
 		sheetIndex: 87,
 		primitives: ['__usused4__']
 	},
-	'Kun': {
+	Kun: {
 		cost: 2,
 		label: 'Kun',
 		sheetIndex: 88,
 		primitives: ['Kun']
 	},
-	'Gam': {
+	Gam: {
 		cost: 5,
 		label: 'Gam',
 		sheetIndex: 89,
 		primitives: ['Gam']
 	},
-	'Nif': {
+	Nif: {
 		cost: 2,
 		label: 'Nif',
 		sheetIndex: 90,
 		primitives: ['Nif']
 	},
-	'Pai': {
+	Pai: {
 		cost: 1,
 		label: 'Pai',
 		sheetIndex: 91,
 		primitives: ['Pai']
 	},
-	'Chi': {
+	Chi: {
 		cost: 1,
 		label: 'Chi',
 		sheetIndex: 92,
 		primitives: ['Chi']
 	},
-	'Ma': {
+	Ma: {
 		cost: 1,
 		label: 'Ma',
 		sheetIndex: 93,
 		primitives: ['Ma']
 	},
-	'Ryo': {
+	Ryo: {
 		cost: 2,
 		label: 'Ryo',
 		sheetIndex: 94,
 		primitives: ['Ryo']
 	},
-	'Ex': {
+	Ex: {
 		cost: 5,
 		label: 'Ex',
 		sheetIndex: 95,
 		primitives: ['Ex']
 	},
-	'Ren': {
+	Ren: {
 		cost: 3,
 		label: 'Ren',
 		sheetIndex: 96,
 		primitives: ['Ren']
 	},
-	'To': {
+	To: {
 		cost: 3,
 		label: 'To',
 		sheetIndex: 97,
 		primitives: ['To']
 	},
-	'Xau': {
+	Xau: {
 		cost: 5,
 		label: 'Xau',
 		sheetIndex: 98,
 		primitives: ['Xau']
 	},
-	'Yun': {
+	Yun: {
 		cost: 3,
 		label: 'Yun',
 		sheetIndex: 99,
 		primitives: ['Yun']
 	},
-	'FireDummy': {
+	FireDummy: {
 		cost: -1,
 		label: 'FireDummy',
 		sheetIndex: 100,
 		primitives: ['FireDummy']
 	},
-	'LightDummy': {
+	LightDummy: {
 		cost: -1,
 		label: 'LightDummy',
 		sheetIndex: 101,
 		primitives: ['LightDummy']
 	},
-	'WaterDummy': {
+	WaterDummy: {
 		cost: -1,
 		label: 'WaterDummy',
 		sheetIndex: 102,
 		primitives: ['WaterDummy']
 	},
-	'EarthDummy': {
+	EarthDummy: {
 		cost: -1,
 		label: 'EarthDummy',
 		sheetIndex: 103,
 		primitives: ['EarthDummy']
 	},
-	'Sol': {
+	Sol: {
 		cost: -1,
 		label: 'Sol',
 		sheetIndex: 106,
 		primitives: ['Sol', 'Light']
 	},
-	'Luna': {
+	Luna: {
 		cost: -1,
 		label: 'Luna',
 		sheetIndex: 107,
 		primitives: ['Luna', 'Shadow']
 	},
-	'Empty': {
+	Empty: {
 		cost: -1,
 		label: '',
 		sheetIndex: 108,
 		primitives: []
 	},
-	'Omnipotence': {
+	Omnipotence: {
 		cost: -1,
 		label: 'Omnipotence',
 		sheetIndex: 109,
 		primitives: ['Omnipotence', 'Fire', 'Water', 'Earth', 'Wind', 'Light', 'Shadow']
 	},
-	'ShadowDummy': {
+	ShadowDummy: {
 		cost: -1,
 		label: 'ShadowDummy',
 		sheetIndex: 110,
 		primitives: ['ShadowDummy']
 	},
-	'WindDummy': {
+	WindDummy: {
 		cost: -1,
 		label: 'WindDummy',
 		sheetIndex: 111,
 		primitives: ['WindDummy']
 	},
 };
-
-var font = new ig.Font('media/onsetsufontblack.png');
-font.letterSpacing -= 2;
-font.lineSpacing -= 2;
 
 EntitySyllable = EntityWidget.extend({
 	size: {x:32, y:32},
@@ -228,11 +225,11 @@ EntitySyllable = EntityWidget.extend({
 		// draw label
 		var x = this.pos.x + this.animSheet.width / 2;
 		var y = this.pos.y + this.animSheet.height / 4 * 3;
-		font.draw(this.label, x, y, ig.Font.ALIGN.CENTER);
+		Font.draw(this.label, x, y, ig.Font.ALIGN.CENTER);
 
 		// draw cost
 		var x = this.pos.x + this.animSheet.width;
-		font.draw(this.cost, x, this.pos.y, ig.Font.ALIGN.RIGHT);
+		Font.draw(this.cost, x, this.pos.y, ig.Font.ALIGN.RIGHT);
 	},
 	matches: function(otherSyllable) {
         return this.matchesPrimitives(otherSyllable.primitives);

@@ -101,6 +101,8 @@ Onsetsu.Game = _SystemGame.extend({
         board.placeSyllable(2,4, EntitySyllable.getShadow());
         board.placeSyllable(2,5, EntitySyllable.getSol());
 
+        this.spawnEntity(EntitySpell, 600, 10, SpellDescriptions.ChainLightning);
+
 		this.addSystem(SystemWidget);
 	},
 
