@@ -57,8 +57,26 @@ EntitySyllableBoard = ig.Entity.extend({
 	getField: function(x, y) {
 	    return this.fields[x][y];
 	},
+	eachField: function(callback, context) {
+		_.each(this.fields, function(stripe) {
+            _.each(stripe, function(field) {
+                if(field) {
+                    callback.call(context, field);
+                }
+            });
+		});
+	},
 	getSyllable: function(x, y) {
 	    return this.syllables[x][y];
+	},
+	eachSyllable: function(callback, context) {
+		_.each(this.syllables, function(stripe) {
+            _.each(stripe, function(syllable) {
+                if(syllable) {
+                    callback.call(context, syllable);
+                }
+            });
+		});
 	},
 	placeSyllable: function(x, y, syllableDescription) {
 	    var pos = this.posForIndex(x, y);
