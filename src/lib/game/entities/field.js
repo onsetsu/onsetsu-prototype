@@ -2,7 +2,7 @@ ig.module(
 	'game.entities.field'
 )
 .requires(
-	'impact.entity'
+	'game.entities.widget'
 )
 .defines(function(){
 
@@ -30,7 +30,7 @@ FieldDescriptions = {
 	}
 };
 
-EntityField = ig.Entity.extend({
+EntityField = EntityWidget.extend({
 	size: {x:32, y:32},
 	animSheet: new ig.AnimationSheet('media/board.png', 32, 32),
 	init: function(x, y, settings) {
