@@ -20,11 +20,64 @@ ig.module(
 	'game.levels.battle',
 
     // systems
+	'game.systems.tween',
 	'game.systems.widget',
 
 	'impact.debug.debug'
 )
 .defines(function(){
+
+ig.Entity.inject({
+	handleMovementTrace: function( res ) {
+		this.standing = false;
+
+		if( res.collision.y ) {
+			if( this.bounciness > 0 && Math.abs(this.vel.y) > this.minBounceVelocity ) {
+				this.vel.y *= -this.bounciness;
+			}
+			else {
+				if( this.vel.y > 0 ) {
+					this.standing = true;
+				}
+				this.vel.y = 0;
+			}
+		}
+		if( res.collision.x ) {
+			if( this.bounciness > 0 && Math.abs(this.vel.x) > this.minBounceVelocity ) {
+				this.vel.x *= -this.bounciness;
+			}
+			else {
+				this.vel.x = 0;
+			}
+		}
+		if( res.collision.slope ) {
+			var s = res.collision.slope;
+
+			if( this.bounciness > 0 ) {
+				var proj = this.vel.x * s.nx + this.vel.y * s.ny;
+
+				this.vel.x = (this.vel.x - s.nx * proj * 2) * this.bounciness;
+				this.vel.y = (this.vel.y - s.ny * proj * 2) * this.bounciness;
+			}
+			else {
+				var lengthSquared = s.x * s.x + s.y * s.y;
+				var dot = (this.vel.x * s.x + this.vel.y * s.y)/lengthSquared;
+
+				this.vel.x = s.x * dot;
+				this.vel.y = s.y * dot;
+
+				var angle = Math.atan2( s.x, s.y );
+				if( angle > this.slopeStanding.min && angle < this.slopeStanding.max ) {
+					this.standing = true;
+				}
+			}
+		}
+
+		// FIX
+		this.pos.x = res.pos.x;
+		this.pos.y = res.pos.y;
+	}
+});
 
 var _SystemGame = ig.Game.extend({
 	init: function() {
@@ -81,6 +134,9 @@ Onsetsu.Game = _SystemGame.extend({
         // Initialize Battle Field
 		this.loadLevel(LevelBattle);
 
+        // stub player
+        var mage = {};
+
         ([60, 70, 80, 20, 30, 40, 50]).forEach(function(xy) {
             var entity = this.spawnEntity(EntitySyllable, xy, xy, EntitySyllable.getFire());
             entity.onclick(function() {
@@ -94,12 +150,22 @@ Onsetsu.Game = _SystemGame.extend({
 
         var board = this.spawnEntity(EntitySyllableBoard, 200, 100, {
             boardSize: { x: 10, y: 10 },
-            mage: "TODO"
+            mage: mage
         });
         board.getField(1,5).setAnim('Fire');
         board.placeSyllable(2,4, EntitySyllable.getShadow());
         board.placeSyllable(2,5, EntitySyllable.getSol());
-
+        board.eachField(function(field) {
+            field.onclick(function() {
+                new TWEEN.Tween(field.pos)
+                    .to({x:100}, 1000)
+                    .onComplete(function() {
+                        field.setAnim('Water')
+                    })
+                    .start();
+                field.setAnim('Fire');
+            });
+        });
         this.spawnEntity(EntitySpell, 600, 10, SpellDescriptions.ChainLightning);
 
         var list = this.spawnEntity(EntitySpellList, 10, 10);
@@ -109,6 +175,9 @@ Onsetsu.Game = _SystemGame.extend({
         list.addSpell(SpellDescriptions.FrostNova);
         list.addSpell(SpellDescriptions.EarthWall);
 
+        this.spawnEntity(EntitySyllableSelection, 250, 50, { mage: mage });
+
+		this.addSystem(SystemTween);
 		this.addSystem(SystemWidget);
 	},
 
