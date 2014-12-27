@@ -241,12 +241,15 @@ EntitySyllable = EntityWidget.extend({
 	    return this.label == 'Empty' && this.primitives.length == 0;
 	},
 	copy: function() {
-	    return ig.game.spawnEntity(EntitySyllable, this.pos.x, this.pos.y, {
+	    return ig.game.spawnEntity(EntitySyllable, this.pos.x, this.pos.y, this.getDescription());
+	},
+	getDescription: function() {
+	    return {
             cost: this.cost,
             label: this.label,
             sheetIndex: this.sheetIndex,
             primitives: this.primitives.slice()
-	    });
+	    };
 	}
 });
 
