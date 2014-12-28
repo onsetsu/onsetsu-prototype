@@ -15,67 +15,27 @@ function hovered(entity) {
     return true;
 }
 
-var StrategyStartInteraction = ig.Class.extend({
-    init: function() {
-
-    }
-});
-
-var leftclick = 'leftclick';
-
 SystemWidget = System.extend({
-	init: function() {
-	    this.parent();
-
-	    systemWidget = this;
-	},
-
 	beforeUpdate: function() {
 		this.parent();
 
-		if(ig.input.pressed(leftclick)) {
+		if(ig.input.pressed('leftclick')) {
+		    var clickedEntity;
+
 		    ig.game.entities.forEach(function(entity) {
                 if(hovered(entity)) {
-                    if(!this.entity) {
-                        this.mouse = {
-                            x: ig.input.mouse.x,
-                            y: ig.input.mouse.y
-                        }
-                        this.entity = entity;
-                        this.clickingBehaviour = true;
+                    if(!clickedEntity) {
+                        clickedEntity = entity;
                     }
-                    if(this.entity.zIndex <= entity.zIndex) {
-                        this.entity = entity;
+                    if(clickedEntity.zIndex <= entity.zIndex) {
+                        clickedEntity = entity;
                     }
                 }
 		    }, this);
-		}
-		if(ig.input.released(leftclick)) {
-		    if(this.clickingBehaviour) {
-                if(this.entity && this.entity.click) {
-                    this.entity.click();
-                }
-		    }
-		}
-		if(ig.input.state(leftclick) && this.entity) {
-		    if(
-		        !this.mouse ||
-                this.mouse.x != ig.input.mouse.x ||
-                this.mouse.y != ig.input.mouse.y
-            ) {
-                if(this.clickingBehaviour) {
-                    this.clickingBehaviour = false;
-                } else {
-                    this.entity.pos.x += ig.input.mouse.x - this.mouse.x;
-                    this.entity.pos.y += ig.input.mouse.y - this.mouse.y;
-                    this.mouse.x = ig.input.mouse.x;
-                    this.mouse.y = ig.input.mouse.y;
-                }
-		    }
-		} else {
-            this.entity = undefined;
-            this.mouse = undefined;
-            this.clickingBehaviour = false;
+
+            if(clickedEntity && clickedEntity.click) {
+                clickedEntity.click();
+            }
 		}
 	}
 });
