@@ -27,6 +27,12 @@ EntityWidget = ig.Entity.extend({
 	},
 	offclick: function() {
 	    this.click = undefined;
+	},
+	ondrag: function(callback) {
+	    this.drag = callback;
+	},
+	offdrag: function() {
+	    this.drag = undefined;
 	}
 });
 

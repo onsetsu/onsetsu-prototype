@@ -138,10 +138,16 @@ Onsetsu.Game = _SystemGame.extend({
         var mage = {};
 
         ([60, 70, 80, 20, 30, 40, 50]).forEach(function(xy) {
-            var entity = this.spawnEntity(EntitySyllable, xy, xy, EntitySyllable.getFire());
+            var entity = this.spawnEntity(EntitySyllable, xy, xy+400, EntitySyllable.getFire());
+            entity.zIndex = xy;
             entity.onclick(function() {
-                entity.vel.x += 1;
-                entity.zIndex = xy;
+            });
+        }, this);
+
+        ([60, 70, 80, 20, 30, 40, 50]).forEach(function(xy) {
+            var entity = this.spawnEntity(EntitySyllable, xy+100, xy+400, EntitySyllable.getWater());
+            entity.zIndex = xy;
+            entity.onclick(function() {
             });
         }, this);
 
@@ -157,13 +163,14 @@ Onsetsu.Game = _SystemGame.extend({
         board.placeSyllable(2,5, EntitySyllable.getSol());
         board.eachField(function(field) {
             field.onclick(function() {
+                field.offclick();
+                field.setAnim('Fire');
                 new TWEEN.Tween(field.pos)
-                    .to({x:100}, 1000)
+                    .to({x:100}, 2000)
                     .onComplete(function() {
                         field.setAnim('Water')
                     })
                     .start();
-                field.setAnim('Fire');
             });
         });
         this.spawnEntity(EntitySpell, 600, 10, SpellDescriptions.ChainLightning);
